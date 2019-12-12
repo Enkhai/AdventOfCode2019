@@ -1,5 +1,5 @@
 import sys
-from shapely.geometry import LineString
+from shapely.geometry import LineString 
 
 wires = []
 with open("inputs/advent3input.txt", "r") as file:
