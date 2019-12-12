@@ -1,30 +1,43 @@
 import sys
 
-input_list = []
+initial_list_data = []
 with open("inputs/advent2input.txt", "r") as file:
     for line in file.readlines():
-        input_list += line.split(",")
-input_list = [int(x) for x in input_list]
+        initial_list_data += line.split(",")
+initial_list_data = [int(x) for x in initial_list_data]
 
 
-def operation(op_type, in1, in2, target):
-    if op_type == 1:
-        input_list[target] = input_list[in1] + input_list[in2]
-    elif op_type == 2:
-        input_list[target] = input_list[in1] * input_list[in2]
-    elif op_type == 99:
-        print("Operation type 99. Halting program.")
-        print("Value at position zero is: %d" % input_list[0])
-        sys.exit()
+def operation(op_code, in1, in2, target, data):
+    if op_code == 1:
+        data[target] = data[in1] + data[in2]
+    elif op_code == 2:
+        data[target] = data[in1] * data[in2]
+    elif op_code == 99:
+        return "exit"
     else:
         print("Wrong operation type!")
         sys.exit()
 
-    print("Target value (%d): %d" % (target, input_list[target]))
+    return 0
+
+
+def output(data):
+    i = 0
+    while i < len(data):
+        if operation(data[i], data[i + 1], data[i + 2], data[i + 3], data) == "exit":
+            break
+        i += 4
+    return data[0]
 
 
 if __name__ == '__main__':
-    i = 0
-    while i < len(input_list):
-        operation(input_list[i], input_list[i + 1], input_list[i + 2], input_list[i + 3])
-        i += 4
+    for noun in range(100):
+        for verb in range(100):
+
+            list_data = initial_list_data.copy()
+            list_data[1] = noun
+            list_data[2] = verb
+
+            if output(list_data) == 19690720:
+                print(100 * noun + verb)
+                sys.exit()
